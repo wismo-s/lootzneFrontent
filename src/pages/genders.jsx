@@ -12,7 +12,7 @@ export function Genders() {
         <article className="gender-item" key={genero.id_genero}>
           <Link to={`/gender/${genero.id_genero}`}>
           <div className="gender-img">
-            { /* <img src={gender.image_url} className="" /> */}
+            <img src={genero.imagen} className="" />
           </div>
           <h2>{genero.nom_genero}</h2>
           </Link>

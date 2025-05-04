@@ -3,35 +3,40 @@ import { listAllObj } from "../api/list.api";
 import Multiselect from 'multiselect-react-dropdown'
 import { postform } from "../api/list.api";
 import { Contextapp } from "../api/context";
+import { useNavigate } from 'react-router-dom';
+
 
 export function FormGames() {
-  const context = useContext(Contextapp)
+  const context = useContext(Contextapp);
+  const navigate = useNavigate()
 
   const [formdata, setformdata] = useState({
-    title: '',
-    description: '',
-    port_image: '',
-    baner_image: '',
+    titulo: '',
+    descripcion: '',
+    imagen: '',
+    portada: '',
     trailer: '',
-    date_realise: '',
-    sellers: 0,
-    calification: 0,
-    developer: '1',
-    price: 0,
-    gender: [],
+    fecha_lanzamiento: '',
+    num_ventas: 0,
+    calificaion: 0,
+    desarrollador: 1,
+    precio: 0,
+    generos: [],
   })
   const [gendata, setgendata] = useState([])
   const [devs, setdevs] = useState([]);
   const [gender, setGender] = useState([])
 
   useEffect(() => {
-      setdevs(context.data.developers)
-      setGender(context.data.genders);
+      setdevs(context.data.desarrolladores);
+      setGender(context.data.generos);
+      console.log(context.data);
+      
   }, []);
 
-  const options = devs.map(dev => ({ id: dev.id, name: dev.name }));
+  const options = devs.map(dev => ({ id: dev.id_desarrollador, name: dev.nom_desarrollador }));
   const gends = gender.reduce((acc, gen)=>{
-    acc[gen.id] = { 'name': gen.title, 'id': gen.id };
+    acc[gen.id_genero] = { 'name': gen.nom_genero, 'id': gen.id_genero };
     return acc
   }, [])
 
@@ -40,14 +45,11 @@ export function FormGames() {
     setformdata({...formdata, [name] : value})
   }
 
-  if (options == [] || devs == [], gender == []) {
-    return(<div>cargando...</div>)
-  }
   const handlesubmit = async (e) => {
     e.preventDefault();
-    formdata.gender = gendata;
+    formdata.generos = gendata;
     console.log(formdata);
-    await postform('games/',formdata)
+    await postform('juego',formdata)
     navigate('/')
     window.location.reload(true);
   }
@@ -74,16 +76,16 @@ export function FormGames() {
   }
     return (
       <div className="w-4/5 m-auto mt-3 mb-3 relative  h-full">
-        <div style={{ backgroundImage: `url(${formdata.port_image})` }} className="video inline-block bg-top bg-cover h-96 w-72 bg-no-repeat relative mb-1"></div>
+        <div style={{ backgroundImage: `url(${formdata.portada})` }} className="video inline-block bg-top bg-cover h-96 w-72 bg-no-repeat relative mb-1"></div>
         <form onSubmit={handlesubmit} className='absolute right-1 top-1 bg-violet-900 p-7 rounded-3xl'>
           <div className='box_form'>
           <input 
             required placeholder=" " 
             className="bg-violet-900 rounded-lg text-3xl font-bold placeholder-slate-300 text-gray-300 mb-4 w-full block input_form_tit" 
             type="text" 
-            id="title" 
-            name="title" 
-            value={formdata.title} 
+            id="titulo" 
+            name="titulo" 
+            value={formdata.titulo} 
             onChange={handleinputchange} 
           />
           <label className='label_form text-3xl'>Titulo</label>
@@ -94,9 +96,9 @@ export function FormGames() {
             required placeholder=" "  
             className="bg-violet-900 placeholder-slate-300 rounded-lg mb-4 text-gray-300 block w-full input_form" 
             type="text" 
-            id="port_image" 
-            name="port_image" 
-            value={formdata.port_image} 
+            id="portada" 
+            name="portada" 
+            value={formdata.portada} 
             onChange={handleinputchange} 
           />
           <label className='label_form'>Imagen portada URL</label>
@@ -105,31 +107,32 @@ export function FormGames() {
           <div className='box_form'>
           <textarea 
             required className="bg-violet-900 placeholder-slate-300 rounded-lg mb-4 text-gray-300 block w-full input_form" 
+            maxLength={250}
             placeholder=" " 
-            id="description" 
-            name="description" 
-            value={formdata.description} 
+            id="descripcion" 
+            name="descripcion" 
+            value={formdata.descripcion} 
             onChange={handleinputchange} 
           />
           <label className='label_form'>Descripción</label>
           </div>
 
-          <label htmlFor="date_realise" className="mb-3 text-slate-100">Date realise: </label>
+          <label htmlFor="fecha_lanzamiento" className="mb-3 text-slate-100">Fecha de Lanzamiento</label>
           <input 
             required className="bg-violet-900 placeholder-slate-300 rounded-lg mb-5 text-gray-300 mr-4 ml-1 input_form" 
             type="date" 
-            id="date_realise" 
-            name="date_realise" 
-            value={formdata.date_realise} 
+            id="fecha_lanzamiento" 
+            name="fecha_lanzamiento" 
+            value={formdata.fecha_lanzamiento} 
             onChange={handleinputchange} 
           />
 
-          <label  htmlFor="developer" className="mb-3 text-slate-100">Developer: </label>
+          <label  htmlFor="desarrollador" className="mb-3 text-slate-100">Desarrollador: </label>
           <select 
             required className="bg-violet-900 placeholder-slate-300 rounded-lg mb-5 text-gray-300 ml-1 input_form"  
-            name="developer" 
-            id="developer" 
-            value={formdata.developer} 
+            name="desarrollador" 
+            id="desarrollador" 
+            value={formdata.desarrollador} 
             onChange={handleinputchange}
           >
           {options.map(op => (
@@ -142,43 +145,42 @@ export function FormGames() {
             isObject={true} 
             options={gends} 
             displayValue="name" 
-            selectedValues={formdata.gender} 
+            selectedValues={formdata.generos} 
             onSelect={handlesubmitMultiselect} 
             onRemove={handledeleteMultiselect}
           />
 
-          <label htmlFor="calification" className="mb-3 text-slate-100">Calification: </label>
+          <label htmlFor="calificaion" className="mb-3 text-slate-100">Calificacion: </label>
           <input 
             required className="placeholder-slate-300 bg-violet-900 rounded-lg mb-5 text-gray-300 mr-4 ml-1 input_form" 
             type="number" 
             min="0" 
             max="100" 
-            id="calification" 
-            name="calification" 
-            value={formdata.calification} 
+            id="calificaion" 
+            name="calificaion" 
+            value={formdata.calificaion} 
             onChange={handleinputchange} 
           />
 
-          <label htmlFor="sellers" className="mb-2 text-slate-100">Sellers: </label>
+          <label htmlFor="num_ventas" className="mb-2 text-slate-100">Numero de ventas: </label>
           <input 
             required className="placeholder-slate-300 bg-violet-900 rounded-lg mb-5 text-gray-300 mr-2 ml-1 input_form" 
             type="number" 
-            min="0" 
-            max="100" 
-            name="sellers" 
-            value={formdata.sellers} 
+            min="0"  
+            name="num_ventas" 
+            value={formdata.num_ventas} 
             onChange={handleinputchange} 
           />
 
-          <label htmlFor="price" className="mb-2 text-slate-100 ml-2">Price: </label>
+          <label htmlFor="precio" className="mb-2 text-slate-100 ml-2">Precio: </label>
           <input 
             required className="placeholder-slate-300 bg-violet-900 rounded-lg mb-5 text-gray-300 mr-2 ml-1 input_form" 
             type="number" 
-            id="price" 
+            id="precio" 
             min="0" 
             max="100"
-            name="price" 
-            value={formdata.price} 
+            name="precio" 
+            value={formdata.precio} 
             onChange={handleinputchange} 
           />
 
@@ -187,9 +189,9 @@ export function FormGames() {
             placeholder=" " 
             className="placeholder-slate-300 bg-violet-900 rounded-lg mb-4 text-gray-300 block w-full input_form" 
             type="text" 
-            id="baner_image" 
-            name="baner_image" 
-            value={formdata.baner_image} 
+            id="imagen" 
+            name="imagen" 
+            value={formdata.imagen} 
             onChange={handleinputchange} 
           />
           <label className='label_form'>Baner imagen URL</label>
@@ -215,7 +217,7 @@ export function FormGames() {
             <iframe  title="YouTube Video" src={`https://www.youtube.com/embed/${formdata.trailer}`} className="w-full" style={{ height: "700px" }} allowFullScreen></iframe>
           </div>
           <div className="mb-5">
-            <img src={formdata.baner_image} alt="" className="w-full" />
+            <img src={formdata.imagen} alt="" className="w-full" />
           </div>
         </div>
       </div>

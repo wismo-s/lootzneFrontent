@@ -32,7 +32,7 @@ export function Gamesdatail() {
   return (
     <main>
     <section className='game-header'>
-        <img src={juego.imagen} alt="" />
+        <img src={juego.portada} alt="" />
         <div className="game-details">
             <div className="game-title">
                 <h1>{juego.titulo}</h1>
@@ -58,7 +58,7 @@ export function Gamesdatail() {
     </section>
     <section className='game-info'>
         <iframe title="YouTube Video" src={`https://www.youtube.com/embed/${juego.trailer}`} className="w-full mb-5 mt-5 h-[700px]" allowFullScreen></iframe>
-        <img src={juego.portada} alt="" className="w-full mb-5 mt-5" />
+        <img src={juego.imagen} alt="" className="w-full mb-5 mt-5" />
     </section>
     </main>
   )

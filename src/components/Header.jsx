@@ -8,11 +8,8 @@ import {
 
 function Header() {
   const context = useContext(Contextapp);
-  const cartcontext = useContext(ContextCart);
   const { usuario } = context.data;
   const [cartIcon, setCartIcon] = useState(false);
-  console.log(context);
-  console.log(cartcontext);
   return (
     <header>
       <Link to="/">Lootzone</Link>

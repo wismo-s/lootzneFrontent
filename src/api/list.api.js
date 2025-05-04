@@ -3,8 +3,8 @@ import axios from 'axios'
 export const listAllObj = (direcion) => {
      return axios.get(`http://localhost:8080/api/${direcion}`)
 }
-export const postform = (direcion, game) => {
-     return axios.post(`https://games-proyecti.onrender.com/games/api/V1/${direcion}`, game)
+export const postform = (direcion, info) => {
+     return axios.post(`http://localhost:8080/api/${direcion}`, info).catch(err => console.log(err))
 }
 export const userCarrito= () => {
      return axios.get('http://localhost:8080/api/carrito').then(res => {return [res.data.juegos]}).catch(err => [])

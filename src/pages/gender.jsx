@@ -23,7 +23,7 @@ export function Gender() {
   return (
     <main style={{ paddingTop: 0 }}>
       <section className="gender-banner">
-        {/* <img src={data.genero.nom_genero} /> */}
+        <img src={data.imagen} />
         <h1>{data.nom_genero}</h1>
       </section>
       <section className="games-container">
