@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { Contextapp } from '../api/context'
 import { listFacturas } from "../api/list.api";
 import { Cartitem } from '../components/cartitem';
+import { mandarCorreo } from '../api/list.api';
 
 export function Factures() {
 
@@ -26,6 +27,12 @@ export function Factures() {
     fetchFacturas();  
   }, []);  
 
+    const handleSubmit = async (e, carritoId) => {
+        const correo = context.data.usuario.email;
+        e.preventDefault();
+        await mandarCorreo(correo, (carritoId-1));
+        alert("Correo enviado");
+      }
 
   if (loading) {
     return <div className='text-gray-300 text-2xl'>Cargando facturas...</div>;
@@ -36,7 +43,7 @@ export function Factures() {
   }
 
   return (
-    <div className='bg-violet-900 m-5 mb-5 p-7 rounded-2xl flex flex-col items-center'>
+    <div className=' m-5 mb-5 p-7 rounded-2xl flex flex-col items-center'>
       {facturas.map(factu => {
         return (
           <div key={factu.id_factura} className='bg-violet-800 mb-2 p-7 rounded-2xl'>
@@ -49,6 +56,9 @@ export function Factures() {
                           ))}
                         </div>
             <p className='text-gray-200 text-2xl font-bold'>TOTAL: ${factu.total}</p>
+            <button onClick={(e) => handleSubmit(e, factu.carrito.id_carrito)} className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+              Enviar PDF
+            </button>
           </div>
         );
       })}

@@ -18,4 +18,6 @@ export const cartEdit = (list) =>{
 export const listFacturas = () =>{
      return axios.get(`http://localhost:8080/api/factura`).then(res => {return res.data}).catch(err => [])
 }
-
+export const mandarCorreo = (correo, carritoId) =>{
+     return axios.get(`http://localhost:8080/api/factura/enviarPdf/${correo}/${carritoId}`).then(x => console.log(x)).catch(err => console.log(err))
+}
