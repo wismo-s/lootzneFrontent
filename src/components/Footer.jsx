@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Footer() {
   const social = {
-    frontend: "https://github.com/wismo-s",
-    backend: "https://github.com/wismo-s",
+    frontend: "https://github.com/wismo-s/lootzneFrontent",
+    backend: "https://github.com/AngeloAl05/Proyecto_DAWI",
   };
   return (
     <footer>

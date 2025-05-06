@@ -30,7 +30,7 @@ export function Factures() {
     const handleSubmit = async (e, carritoId) => {
         const correo = context.data.usuario.email;
         e.preventDefault();
-        await mandarCorreo(correo, (carritoId-1));
+        await mandarCorreo(correo, carritoId);
         alert("Correo enviado");
       }
 
